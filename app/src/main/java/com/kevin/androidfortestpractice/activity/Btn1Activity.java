@@ -15,6 +15,8 @@ import com.kevin.androidfortestpractice.views.OnWheelChangedListener;
 import com.kevin.androidfortestpractice.views.OnWheelScrollListener;
 import com.kevin.androidfortestpractice.views.WheelView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class Btn1Activity extends AppCompatActivity {
@@ -24,6 +26,7 @@ public class Btn1Activity extends AppCompatActivity {
     private Toast toast;
     private Button btnTest;
     private EditText etNumber;
+    private List<String> mList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,20 +40,35 @@ public class Btn1Activity extends AppCompatActivity {
 
             Log.e(TAG, "长度为空");
         }
-        wheel.setAdapter(new ArrayWheelAdapter<>(new String[]{
-                "位置:1 速度:1 内容:前进 RFID:1234567980123456",
-                "位置:2 速度:1 内容:左转 RFID:sadasdasddasdasd",
-                "位置:3 速度:1 内容:左转 RFID:fcfhgfhgfuydrgdr",
-                "位置:4 速度:1 内容:前进 RFID:fdsf45ds4fsd4f3s",
-                "位置:5 速度:1 内容:右转 RFID:gdf31g32fd1gfd13",
-                "位置:6 速度:1 内容:前进 RFID:dsf13esfds13f1ds",
-                "位置:7 速度:1 内容:左转 RFID:ds4yt44g5d4g5r4t",
-                "位置:8 速度:1 内容:左转 RFID:grtg5f4g8r4de54d",
-                "位置:9 速度:1 内容:前进 RFID:esryt8kj87awwtf4",
-                "位置:10 速度:1 内容:前进 RFID:asd45s4f5ds4fs4",
-                "位置:11 速度:1 内容:右转 RFID:r4g5464fds4g4gg",
-                "位置:12 速度:1 内容:前进 RFID:sad5456fd4f4ds6"
-        }));
+        mList.add("位置:1 速度:1 内容:前进 RFID:1234567980123456");
+        mList.add("位置:2 速度:1 内容:左转 RFID:sadasdasddasdasd");
+        mList.add("位置:3 速度:1 内容:左转 RFID:fcfhgfhgfuydrgdr");
+        mList.add("位置:4 速度:1 内容:前进 RFID:fdsf45ds4fsd4f3s");
+        mList.add("位置:5 速度:1 内容:右转 RFID:gdf31g32fd1gfd13");
+        mList.add("位置:6 速度:1 内容:前进 RFID:dsf13esfds13f1ds");
+        mList.add("位置:7 速度:1 内容:左转 RFID:ds4yt44g5d4g5r4t");
+        mList.add("位置:8 速度:1 内容:左转 RFID:grtg5f4g8r4de54d");
+        mList.add("位置:9 速度:1 内容:前进 RFID:esryt8kj87awwtf4");
+        mList.add("位置:10 速度:1 内容:前进 RFID:asd45s4f5ds4fs4");
+        mList.add("位置:11 速度:1 内容:右转 RFID:r4g5464fds4g4gg");
+        mList.add("位置:12 速度:1 内容:前进 RFID:sad5456fd4f4ds6");
+        wheel.setAdapter(new ArrayWheelAdapter<>(mList));
+
+
+//        wheel.setAdapter(new ArrayWheelAdapter<>(new String[]{
+//                "位置:1 速度:1 内容:前进 RFID:1234567980123456",
+//                "位置:2 速度:1 内容:左转 RFID:sadasdasddasdasd",
+//                "位置:3 速度:1 内容:左转 RFID:fcfhgfhgfuydrgdr",
+//                "位置:4 速度:1 内容:前进 RFID:fdsf45ds4fsd4f3s",
+//                "位置:5 速度:1 内容:右转 RFID:gdf31g32fd1gfd13",
+//                "位置:6 速度:1 内容:前进 RFID:dsf13esfds13f1ds",
+//                "位置:7 速度:1 内容:左转 RFID:ds4yt44g5d4g5r4t",
+//                "位置:8 速度:1 内容:左转 RFID:grtg5f4g8r4de54d",
+//                "位置:9 速度:1 内容:前进 RFID:esryt8kj87awwtf4",
+//                "位置:10 速度:1 内容:前进 RFID:asd45s4f5ds4fs4",
+//                "位置:11 速度:1 内容:右转 RFID:r4g5464fds4g4gg",
+//                "位置:12 速度:1 内容:前进 RFID:sad5456fd4f4ds6"
+//        }));
 //        wheel.setAdapter(new ArrayWheelAdapter<>(n));
         wheel.setCyclic(true);
         wheel.TEXT_SIZE = 20;
@@ -69,7 +87,12 @@ public class Btn1Activity extends AppCompatActivity {
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                wheel.setCurrentItem(Integer.parseInt(etNumber.getText().toString()));
+
+                int getI = getLoc(mList,"1234567980123456");
+                if (getI!=-1) {
+                    wheel.setCurrentItem(getI);
+                }
+//                wheel.setCurrentItem(Integer.parseInt(etNumber.getText().toString()));
                 String m = wheel.getAdapter().getItem(wheel.getCurrentItem());
                 Log.e(TAG, "m=" + m);
             }
@@ -98,6 +121,18 @@ public class Btn1Activity extends AppCompatActivity {
             toast.setText(data);
         }
         toast.show();
+    }
+
+    //查找list内包含指定字符串的ID
+    private int getLoc(List<String> list, String conString) {
+        int getLoc = -1;
+        int size = list.size();
+        for (int i = 0; i < size; i++) {
+            if (list.get(i).contains(conString)) {
+                getLoc = i;
+            }
+        }
+        return getLoc;
     }
 
 }

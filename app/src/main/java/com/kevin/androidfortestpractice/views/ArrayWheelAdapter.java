@@ -15,6 +15,8 @@
  */
 package com.kevin.androidfortestpractice.views;
 
+import java.util.List;
+
 /**
  * The simple Array wheel adapter
  * @param <T> the element type
@@ -37,6 +39,12 @@ public class ArrayWheelAdapter<T> implements WheelAdapter {
 	public ArrayWheelAdapter(T items[], int length) {
 		this.items = items;
 		this.length = length;
+	}
+
+	public ArrayWheelAdapter(List<String> mList) {
+		this.items = (T[]) mList.toArray();
+//		this.items = items;
+		this.length = mList.size();
 	}
 	
 	/**
